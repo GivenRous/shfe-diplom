@@ -1,0 +1,271 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.client-hidden {
+  display: none;
+}
+
+.client {
+  width: 100%;
+  min-height: 100vh;
+  background-image: url("../img/mainbackground.jfif");
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 14px;
+  padding-bottom: 20px;
+}
+
+.client__container {
+  width: 62%;
+  margin: auto;
+}
+
+.client__header {
+  width: 100%;
+}
+
+.client__header__logo-and-login {
+  width: 97%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.client__header__logo h1 {
+  font-size: 34px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.client__header__logo h1 > span {
+  font-weight: 100;
+  font-size: 34px;
+}
+
+.client__header__login__button {
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 12px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  background: #16a6af;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.12),
+    0px 3px 3px 0px rgba(0, 0, 0, 0.24);
+}
+
+.client__header__dates {
+  width: 100%;
+  display: flex;
+  gap: 1px;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.client__header__data {
+  width: calc(((100% - 24%) / 6) - 5px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12),
+    0px 2px 2px 0px rgba(0, 0, 0, 0.24);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  cursor: pointer;
+}
+
+.client__header__data__active {
+  width: 24%;
+  background: #fff;
+  opacity: 1;
+  scale: 1.04;
+}
+
+.client__header__data span {
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.client__header__data__active span {
+  font-weight: 700;
+}
+
+.holiday {
+  color: red;
+}
+
+.all-films {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.film {
+  padding: 15px;
+  background: rgba(241, 235, 230, 0.95);
+}
+
+.film__poster-and-description {
+  display: flex;
+}
+
+.film__poster {
+  width: 125px;
+  height: 175px;
+  object-fit: cover;
+}
+
+.film__description {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.film__name {
+  font-size: 16px;
+  font-weight: 700;
+  border-left: 6px solid #393939;
+  padding-left: 8px;
+}
+
+.film__about {
+  font-size: 14px;
+  font-weight: 400;
+  padding-left: 15px;
+}
+
+.film__duration-and-origin {
+  font-size: 14px;
+  font-weight: 300;
+  padding-left: 15px;
+}
+
+.film__all-halls {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.hall__name {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.film__hall__all-seances {
+  display: flex;
+  gap: 4px;
+  margin-top: 7px;
+}
+
+.film__hall__seance {
+  padding: 7.2px 7.33px 8.05px 8px;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12),
+    0px 2px 2px 0px rgba(0, 0, 0, 0.24);
+  font-size: 15px;
+  font-weight: 400;
+  cursor: pointer;
+  list-style: none;
+}
+
+.film__hall__seance__not-available {
+  cursor: auto;
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.popup__seance__buttons {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.client__btn,
+.seanse__btn__reserve {
+  padding: 11.2px 56.503px 11.9px 56.887px;
+  border-radius: 3px;
+  background: #16a6af;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.12),
+    0px 3px 3px 0px rgba(0, 0, 0, 0.24);
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.client__btn__cancel {
+  padding: 11.2px 31.242px 11.9px 31.558px;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.12),
+    0px 3px 3px 0px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  color: #63536c;
+  font-size: 14px;
+  text-transform: uppercase;
+  border: none;
+}
+
+@media (min-width: 769px) and (max-width: 1000px) {
+  .client__container {
+    width: 90%;
+  }
+  .seance__all-seats-types {
+    width: 40%;
+  }
+}
+
+@media (min-width: 515px) and (max-width: 768px) {
+  .client__container {
+    width: 100%;
+  }
+  .client__header__data {
+    padding: 10px 3px 10px 10px;
+  }
+  .client__header__data {
+    width: 20%;
+  }
+  .client__header__data span {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 514px) {
+  .client__container {
+    width: 100%;
+  }
+  .client__header__data {
+    padding: 10px 3px 10px 10px;
+  }
+  .client__header__data {
+    width: 20%;
+  }
+  .client__header__data span {
+    font-size: 12px;
+  }
+  .popup__get-code__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .seance__all-seats-types {
+    width: 75%;
+  }
+  .client__btn {
+    padding: 11px 15px;
+  }
+}

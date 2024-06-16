@@ -1,0 +1,131 @@
+.popup__seance {
+  background: rgba(241, 235, 230, 0.95);
+  padding: 15px 0 30px 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.seance__description {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0 0 15px 15px;
+}
+
+.seance__film-name,
+.seance__hall-name {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.seance__time,
+.seance__data {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.seance__hall-scheme__container {
+  background: #171d24;
+  color: white;
+  padding: 15px 0;
+}
+
+.seance__hall__screen-and-scheme {
+  width: min-content;
+  margin: auto;
+}
+
+.seance__hall__screen {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.seance__hall-scheme {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: max-content;
+  margin: auto;
+}
+
+.seance__hall-scheme__row {
+  display: flex;
+  gap: 4px;
+}
+
+.seance__all-seats-types {
+  width: 35%;
+  margin: auto;
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.seance__seat__color-and-name {
+  display: flex;
+  gap: 4px;
+}
+
+.seance__seat,
+.seance__seat-type {
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.seance__seat {
+  cursor: pointer;
+}
+
+.color__seats-standart-free,
+.standart {
+  border: 1px solid #525252;
+  background: #fff;
+}
+
+.color__busy,
+.taken {
+  border: 1px solid #525252;
+  cursor: auto;
+}
+
+.color__seats-vip-free,
+.vip {
+  border: 1px solid #525252;
+  background: #f9953a;
+}
+
+.color__seats-disabled,
+.disabled {
+  border: 1px solid #171d24;
+  background: #171d24;
+  cursor: auto;
+}
+
+.color__seats-selected {
+  border: 1px solid #525252;
+  background: #25c4ce;
+  box-shadow: 0px 0px 4px 0px #16a6af;
+}
+
+.seance__seat__name {
+  font-size: 14px;
+  font-weight: 300;
+  align-self: center;
+}
+
+@media (min-width: 769px) and (max-width: 1000px) {
+  .seance__all-seats-types {
+    width: 40%;
+  }
+}
+
+@media (max-width: 514px) {
+  .seance__all-seats-types {
+    width: 75%;
+  }
+}

@@ -1,0 +1,145 @@
+.popup {
+  display: none;
+  width: 60%;
+  margin: auto;
+}
+
+.popup__add-hall-active,
+.popup__add-film-active,
+.popup__add-session-active {
+  display: block;
+  position: absolute;
+  top: 85px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10012;
+}
+
+.popup__title-and-close {
+  display: flex;
+  justify-content: space-between;
+  background: #63536c;
+  padding: 16px 42px 14px 42px;
+}
+
+.popup__title {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.popup__close {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.popup__value {
+  background: rgba(234, 233, 235, 0.95);
+  padding-top: 34px;
+  padding-bottom: 35px;
+}
+
+.popup__form {
+  width: 78%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.popup__form__label {
+  color: #848484;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.popup__form__input {
+  padding: 8px;
+  border: 1px solid #b7b7b7;
+}
+
+.popup__form__buttons {
+  margin-top: 34px;
+  align-self: center;
+  display: flex;
+  gap: 14px;
+}
+
+.popup__btn-add,
+.input__file-button {
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  text-transform: uppercase;
+
+  padding: 11.2px 32px 11.9px 32px;
+  border-radius: 3px;
+  border: none;
+  background: #16a6af;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.12),
+    0px 3px 3px 0px rgba(0, 0, 0, 0.24);
+}
+
+.popup__form__cancellation,
+.popup__form-film__cancellation,
+.popup__form-session__cancellation {
+  cursor: pointer;
+  color: #63536c;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 11.2px 31.242px 11.9px 31.558px;
+  border-radius: 3px;
+  border: none;
+  background: #fff;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.12),
+    0px 3px 3px 0px rgba(0, 0, 0, 0.24);
+}
+
+.popup__form__add-film > .popup__form__label {
+  margin-top: 0;
+}
+
+.popup__form__add-film .popup__form__label {
+  margin-top: 8px;
+}
+
+.popup__form__input__film-description {
+  height: 80px;
+}
+
+.input__file {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+}
+
+.popup__form__select {
+  border: 1px solid #b7b7b7;
+  padding: 8px 12px;
+}
+
+.popup__form__select__halls,
+.popup__form__select__films {
+  margin-bottom: 8px;
+}
+.popup__form__input__time {
+  padding: 8px 0 8px 12px;
+}
+
+@media (min-width: 470px) and (max-width: 800px) {
+  .popup {
+    width: 100%;
+  }
+}
+
+@media (max-width: 469px) {
+  .popup {
+    width: 100%;
+  }
+  .popup__form__buttons {
+    flex-direction: column;
+  }
+}

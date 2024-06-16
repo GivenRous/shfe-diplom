@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/seance.css" />
+    <link rel="stylesheet" href="css/ticket.css" />
+    <script src="js/QRCreator.js" defer></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="client">
+      <div class="client__container">
+        <header class="client__header">
+          <div class="client__header__logo-and-login">
+            <div class="client__header__logo">
+              <h1>Идем<span>в</span>кино</h1>
+            </div>
+            <div class="client__header__login">
+              <button class="client__header__login__button" id="btn-login">
+                Войти
+              </button>
+            </div>
+          </div>
+          <div class="client__header__dates">
+            <div class="client__header__data client__header__data__active">
+              <span class="day-of-the-week"></span>
+              <span class="data-of-mounth"></span>
+            </div>
+            <div class="client__header__data">
+              <span class="day-of-the-week"></span>
+              <span class="data-of-mounth"></span>
+            </div>
+            <div class="client__header__data">
+              <span class="day-of-the-week"></span>
+              <span class="data-of-mounth"></span>
+            </div>
+            <div class="client__header__data">
+              <span class="day-of-the-week"></span>
+              <span class="data-of-mounth"></span>
+            </div>
+            <div class="client__header__data">
+              <span class="day-of-the-week"></span>
+              <span class="data-of-mounth"></span>
+            </div>
+            <div class="client__header__data">
+              <span class="day-of-the-week"></span>
+              <span class="data-of-mounth"></span>
+            </div>
+            <div class="client__header__data">
+              <span class="day-of-the-week"></span>
+              <span class="data-of-mounth"></span>
+            </div>
+          </div>
+        </header>
+
+        <div class="popup popup__seance hidden">
+          <div class="seance__description">
+            <span class="seance__film-name"></span>
+            <span class="seance__data"></span>
+            <span class="seance__time"></span>
+            <span class="seance__hall-name"></span>
+          </div>
+          <div class="seance__hall-scheme__container">
+            <div class="seance__hall__screen-and-scheme">
+              <img
+                src="img/screen.png"
+                class="seance__hall__screen"
+                alt="screen"
+              />
+              <div class="seance__hall-scheme"></div>
+            </div>
+            <div class="seance__all-seats-types">
+              <div
+                class="seance__seat__color-and-name seance__seat-standart-free"
+              >
+                <div class="seance__seat-type color__seats-standart-free"></div>
+                <span class="seance__seat__name"
+                  >Свободно (<span class="seance__seat__standart-cost"></span
+                  >руб)</span
+                >
+              </div>
+              <div class="seance__seat__color-and-name seance__seat-busy">
+                <div class="seance__seat-type color__busy"></div>
+                <span class="seance__seat__name">Занято</span>
+              </div>
+              <div
+                class="seance__seat__color-and-name seance__seat-standart-vip"
+              >
+                <div class="seance__seat-type color__seats-vip-free"></div>
+                <span class="seance__seat__name"
+                  >Свободно VIP (<span class="seance__seat__vip-cost"></span
+                  >руб)</span
+                >
+              </div>
+              <div class="seance__seat__color-and-name seance__seat-selected">
+                <div class="seance__seat-type color__seats-selected"></div>
+                <span class="seance__seat__name">Выбрано</span>
+              </div>
+            </div>
+          </div>
+          <div class="popup__seance__buttons">
+            <button class="client__btn seanse__btn__reserve">
+              Забронировать
+            </button>
+            <button class="client__btn__cancel seanse__btn__cancel">
+              Отменить
+            </button>
+          </div>
+        </div>
+
+        <div class="popup__get-code hidden">
+          <h1 class="popup__get-code__title">Вы выбрали билеты:</h1>
+          <div class="popup__get-code-container">
+            <div class="popup__get-code__description">
+              <span class="description__name"
+                >На фильм:
+                <span class="description__item description__film-name"></span>
+              </span>
+              <span class="description__name"
+                >Ряд/место:
+                <span class="description__item description__seats"></span>
+              </span>
+              <span class="description__name"
+                >В зале:
+                <span class="description__item description__hall"></span>
+              </span>
+              <span class="description__name"
+                >Дата:
+                <span class="description__item description__date"></span>
+              </span>
+              <span class="description__name"
+                >Начало сеанса:
+                <span class="description__item description__time"></span>
+              </span>
+              <span class="description__name"
+                >Стоимость:
+                <span class="description__item description__coast"></span>
+                рублей
+              </span>
+            </div>
+            <div class="popup__get-code__buttons">
+              <button class="client__btn get-code__btn">
+                Получить код бронирования
+              </button>
+              <button class="client__btn__cancel get-code__btn__cancel">
+                Отменить
+              </button>
+            </div>
+            <span class="popup__get-code__bottom-text"
+              >После оплаты билет будет доступен в этом окне, а также придёт вам
+              на почту. Покажите QR-код нашему контроллёру у входа в зал.</span
+            >
+            <span class="popup__get-code__bottom-text"
+              >Приятного просмотра!</span
+            >
+          </div>
+        </div>
+
+        <div class="popup__ticket hidden">
+          <h1 class="popup__ticket__title">Электронный билет</h1>
+          <div class="popup__ticket-container">
+            <div class="popup__ticket__description">
+              <span class="description__name"
+                >На фильм:
+                <span class="description__item ticket__film-name"></span>
+              </span>
+              <span class="description__name"
+                >Ряд/место:
+                <span class="description__item ticket__seats"></span>
+              </span>
+              <span class="description__name"
+                >В зале:
+                <span class="description__item ticket__hall"></span>
+              </span>
+              <span class="description__name"
+                >Дата:
+                <span class="description__item ticket__date"></span>
+              </span>
+              <span class="description__name"
+                >Начало сеанса:
+                <span class="description__item ticket__time"></span>
+              </span>
+            </div>
+            <div class="popup__ticket__code"></div>
+            <span class="popup__ticket__bottom-text"
+              >Покажите QR-код нашему контроллеру для подтверждения
+              бронирования.</span
+            >
+            <span class="popup__ticket__bottom-text">Приятного просмотра!</span>
+            <button class="client__btn__cancel ticket__btn__cancel">
+              Закрыть
+            </button>
+          </div>
+        </div>
+
+        <main class="all-films"></main>
+      </div>
+    </div>
+    <script type="module" src="js/index.js"></script>
+    <script type="module" src="js/seance.js"></script>
+    <script type="module" src="js/getcode.js"></script>
+    <script type="module" src="js/getticket.js"></script>
+  </body>
+</html>

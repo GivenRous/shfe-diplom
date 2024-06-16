@@ -1,0 +1,146 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.admin {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../img/adminbackground.jfif");
+  width: 100%;
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding-top: 35px;
+}
+
+.admin__black {
+  position: relative;
+}
+
+.admin__black::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: black;
+  opacity: 0.7;
+  z-index: 10011;
+}
+
+.admin-container {
+  width: 60%;
+  margin: auto;
+}
+
+.admin__header__logo {
+  margin-left: 104px;
+  margin-bottom: 35px;
+}
+
+.admin__header__logo h1 {
+  font-size: 34px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.admin__header__logo h1 > span {
+  font-weight: 100;
+  font-size: 34px;
+}
+
+.under-logo {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  display: block;
+}
+
+.admin__login {
+  width: 50%;
+  margin: auto;
+  background: rgba(234, 233, 235, 0.95);
+}
+
+.login__title {
+  background: #63536c;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  text-align: center;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.login__form {
+  padding: 35px 0px;
+  width: 57%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.login__form label {
+  color: #848484;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.login__form input {
+  padding: 8px 9px;
+  border: 1px solid #b7b7b7;
+}
+
+.login__label-password {
+  margin-top: 8px;
+}
+
+.login__form__btn {
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+
+  padding: 11.2px 31.548px 11.9px 31.932px;
+  margin-top: 17px;
+  width: 189px;
+  align-self: center;
+  border-radius: 3px;
+  border: none;
+  background: #16a6af;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.12),
+    0px 3px 3px 0px rgba(0, 0, 0, 0.24);
+}
+
+@media (min-width: 630px) and (max-width: 800px) {
+  .admin__header__logo {
+    margin-left: 14px;
+  }
+  .admin__login {
+    width: 62%;
+  }
+}
+
+@media (max-width: 629px) {
+  .admin__header__logo {
+    margin-left: 14px;
+  }
+  .admin__login {
+    width: 100%;
+  }
+}
