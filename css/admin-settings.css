@@ -418,6 +418,32 @@
   gap: 35px;
 }
 
+.session {
+  display: flex;
+  position: relative;
+  gap: 20px;
+}
+
+.session .dropzone {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: -60px;
+  top: 5px;
+}
+
+.session .dropzone:before {
+  content: "🗑️";
+}
+
+.session .dropzone.visible {
+  display: flex;
+}
+
 .session__hall-name {
   font-size: 16px;
   font-weight: 500;
@@ -507,6 +533,7 @@
   .admin-container {
     width: 100%;
   }
+
   .film {
     width: calc(50% - 9px);
   }
@@ -516,9 +543,11 @@
   .admin-container {
     width: 100%;
   }
+
   .film {
     width: calc(50% - 9px);
   }
+
   .all-types-place {
     flex-wrap: wrap;
   }
@@ -528,31 +557,38 @@
   .admin-container {
     width: 100%;
   }
+
   .setting-header__circle {
     width: 22px;
     height: 22px;
     margin-left: 20px;
   }
+
   .setting-header__title {
     border: none;
     padding-top: 20px;
     padding-bottom: 20px;
   }
+
   .setting-header__arrow-img {
     margin-right: 20px;
   }
+
   .setting-content__container {
     border: none;
     margin-left: 0;
     padding-left: 31px;
     padding-right: 31px;
   }
+
   .all-films__container {
     margin-top: 36px;
   }
+
   .film {
     width: 100%;
   }
+
   .all-types-place {
     flex-wrap: wrap;
   }

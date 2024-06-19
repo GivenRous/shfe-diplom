@@ -513,6 +513,7 @@ export function createAllSeances() {
       const filmInHall = document.createElement("div");
       filmInHall.classList.add("session__film");
       filmInHall.dataset.seanceid = seance.id;
+      filmInHall.setAttribute("draggable", "true");
       const filmInHallSpan = document.createElement("span");
       filmInHallSpan.classList.add("session__film-name");
       filmInHallSpan.textContent = film.dataset.name;
@@ -528,18 +529,44 @@ export function createAllSeances() {
       filmInHall.classList.add(`background-color-${film.dataset.color}`);
       filmInHall.style.width = `${film.dataset.duration * minutInPixel}%`;
 
-      filmInHall.addEventListener("mouseenter", () =>
-        hoverEffectOnFilm(filmInHallSpan)
-      );
-      filmInHall.addEventListener("mouseleave", () =>
-        deleteHoverEffectOnFilm(filmInHallSpan, film.dataset.name)
-      );
-
       hall.insertAdjacentElement("beforeend", filmInHall);
-      filmInHall.addEventListener("click", () =>
-        deleteSeance(filmInHall.dataset.seanceid)
-      );
+
       filmInHall.style.top = `-${getTopPosition(hall, filmInHall)}px`;
+
+      const dropzone = document.createElement("div");
+      dropzone.classList.add("dropzone");
+      const hallContainer = filmInHall.closest(".session");
+      if (!hallContainer.querySelector(".dropzone")) {
+        hallContainer.insertAdjacentElement("afterbegin", dropzone);
+      }
+
+      const closestDropzone = hallContainer.querySelector(".dropzone");
+      let draggableFilm;
+
+      filmInHall.addEventListener("dragstart", () => {
+        closestDropzone.classList.add("visible");
+        draggableFilm = filmInHall;
+      });
+
+      closestDropzone.addEventListener("dragover", (event) => {
+        event.preventDefault();
+      });
+
+      closestDropzone.addEventListener("drop", (event) => {
+        event.preventDefault();
+        closestDropzone.classList.remove("visible");
+        if (!draggableFilm) return;
+        deleteSeance(draggableFilm.dataset.seanceid);
+      });
+
+      closestDropzone.addEventListener("dragleave", () => {
+        closestDropzone.classList.remove("visible");
+      });
+
+      document.addEventListener("dragend", () => {
+        closestDropzone.classList.remove("visible");
+        draggableFilm = 0;
+      });
     });
   });
 }
@@ -548,14 +575,6 @@ function getTopPosition(hall, film) {
   const hallTop = hall.getBoundingClientRect().top + 10;
   const filmTop = film.getBoundingClientRect().top;
   return filmTop - hallTop;
-}
-
-function hoverEffectOnFilm(filmName) {
-  filmName.textContent = "Удалить сеанс";
-}
-
-function deleteHoverEffectOnFilm(filmSpan, filmName) {
-  filmSpan.textContent = filmName;
 }
 
 async function deleteSeance(seanceId) {
