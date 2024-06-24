@@ -1,5 +1,6 @@
 import { openPopupSeance } from "./seance.js";
 
+const url = "https://shfe-diplom.neto-server.ru";
 const allDates = Array.from(document.querySelectorAll(".client__header__data"));
 const loginBtn = document.getElementById("btn-login");
 
@@ -72,7 +73,7 @@ function isHoliday(day, block) {
 const allFilmsContainer = document.querySelector(".all-films");
 
 export function getAllData() {
-  return fetch("https://shfe-diplom.neto-server.ru/alldata")
+  return fetch(`${url}/alldata`)
     .then((response) => response.json())
     .then((data) => {
       return data;

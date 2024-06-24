@@ -1,5 +1,6 @@
 import { getDateForFech } from "./seance.js";
 
+const url = "https://shfe-diplom.neto-server.ru";
 const popupTicket = document.querySelector(".popup__ticket");
 const popupGetCode = document.querySelector(".popup__get-code");
 const btnTicketCancel = document.querySelector(".ticket__btn__cancel");
@@ -39,7 +40,7 @@ function fetchTicket(seanceId, date, seats) {
   params.set("ticketDate", correctDate);
   params.set("tickets", JSON.stringify(seats));
 
-  fetch("https://shfe-diplom.neto-server.ru/ticket", {
+  fetch(`${url}/ticket`, {
     method: "POST",
     body: params,
   })

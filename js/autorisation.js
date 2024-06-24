@@ -1,3 +1,4 @@
+const url = "https://shfe-diplom.neto-server.ru";
 const clientPage = document.querySelector(".client");
 const adminPage = document.querySelector(".admin");
 const adminPageLogin = document.querySelector(".admin__login");
@@ -12,7 +13,7 @@ if (document.cookie.includes("isLoggedIn=true")) {
 
 autorisationBtn.onclick = async (e) => {
   e.preventDefault();
-  let response = await fetch("https://shfe-diplom.neto-server.ru/login", {
+  let response = await fetch(`${url}/login`, {
     method: "POST",
     body: new FormData(autorisationForm),
   });

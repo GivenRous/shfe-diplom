@@ -1,5 +1,6 @@
 import { getAllData, createAllSeances } from "./adminsettings.js";
 
+const url = "https://shfe-diplom.neto-server.ru";
 const popupAddSession = document.querySelector(".popup__add-session");
 const adminPageSettings = document.querySelector(".admin");
 const popupClose = document.querySelector(".popup__add-session__close");
@@ -77,7 +78,7 @@ async function fetchAddSession(hallId, filmId, time) {
     params.set("seanceFilmid", filmId);
     params.set("seanceTime", time);
 
-    let response = await fetch("https://shfe-diplom.neto-server.ru/seance", {
+    let response = await fetch(`${url}/seance`, {
       method: "POST",
       body: params,
     });

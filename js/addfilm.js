@@ -1,5 +1,6 @@
 import { createAllFilms } from "./adminsettings.js";
 
+const url = "https://shfe-diplom.neto-server.ru";
 const btnAddFilm = document.querySelector(".add__film__btn");
 const popupAddFilm = document.querySelector(".popup__add-film");
 const adminPageSettings = document.querySelector(".admin");
@@ -51,7 +52,7 @@ async function fetchAddFilm(name, duration, description, origin, poster) {
   params.set("filmOrigin", origin);
   params.set("filePoster", poster);
 
-  let response = await fetch("https://shfe-diplom.neto-server.ru/film", {
+  let response = await fetch(`${url}/film`, {
     method: "POST",
     body: params,
   });

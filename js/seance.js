@@ -1,6 +1,7 @@
 import { getAllData } from "./index.js";
 import { openPopupGetCode } from "./getcode.js";
 
+const url = "https://shfe-diplom.neto-server.ru";
 const popupSeance = document.querySelector(".popup__seance");
 const btnLogin = document.querySelector(".client__header__login");
 const datesInHeades = document.querySelector(".client__header__dates");
@@ -45,7 +46,7 @@ function createInfoSeance(seanceInHall, filmHall, film) {
 
 function getHallConfig(seanceId, date) {
   return fetch(
-    `https://shfe-diplom.neto-server.ru/hallconfig?seanceId=${seanceId}&date=${date}`
+    `${url}/hallconfig?seanceId=${seanceId}&date=${date}`
   )
     .then((response) => response.json())
     .then((data) => {

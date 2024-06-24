@@ -1,5 +1,6 @@
 import { getAllHalls } from "./adminsettings.js";
 
+const url = "https://shfe-diplom.neto-server.ru";
 const btnAddHall = document.querySelector(".add-hall__btn");
 const popupAddHall = document.querySelector(".popup__add-hall");
 const adminPageSettings = document.querySelector(".admin");
@@ -32,7 +33,7 @@ popupBtnAddHall.addEventListener("click", (e) => {
 async function fetchAddHall(name) {
   const params = new FormData();
   params.set("hallName", name);
-  await fetch("https://shfe-diplom.neto-server.ru/hall", {
+  await fetch(`${url}/hall`, {
     method: "POST",
     body: params,
   })

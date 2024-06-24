@@ -1,9 +1,10 @@
 import { openSessionPopup, getMinutes } from "./addsession.js";
 
+const url = "https://shfe-diplom.neto-server.ru";
 const allHalls = document.querySelector(".all-halls");
 
 export function getAllData() {
-  return fetch("https://shfe-diplom.neto-server.ru/alldata")
+  return fetch(`${url}/alldata`)
     .then((response) => response.json())
     .then((data) => {
       return data;
@@ -47,7 +48,7 @@ function createAllHalls(data) {
 
 async function deleteHall(el, id) {
   el.remove();
-  await fetch(`https://shfe-diplom.neto-server.ru/hall/${id}`, {
+  await fetch(`${url}/hall/${id}`, {
     method: "DELETE",
   })
     .then((response) => response.json())
@@ -230,7 +231,7 @@ function fetchConfigHall() {
   params.set("rowCount", rowCount);
   params.set("placeCount", placeCount);
   params.set("config", JSON.stringify(config));
-  fetch(`https://shfe-diplom.neto-server.ru/hall/${hallId}`, {
+  fetch(`${url}/hall/${hallId}`, {
     method: "POST",
     body: params,
   }).then((response) => response.json());
@@ -338,7 +339,7 @@ btnSavePrices.addEventListener("click", () => {
     const params = new FormData();
     params.set("priceStandart", standart);
     params.set("priceVip", vip);
-    fetch(`https://shfe-diplom.neto-server.ru/price/${el.dataset.id}`, {
+    fetch(`${url}/price/${el.dataset.id}`, {
       method: "POST",
       body: params,
     })
@@ -395,7 +396,7 @@ export async function createAllFilms(filmsFromFetch) {
 
 function deleteFilm(el, id) {
   el.remove();
-  fetch(`https://shfe-diplom.neto-server.ru/film/${id}`, {
+  fetch(`${url}/film/${id}`, {
     method: "DELETE",
   })
     .then((response) => response.json())
@@ -578,7 +579,7 @@ function getTopPosition(hall, film) {
 }
 
 async function deleteSeance(seanceId) {
-  await fetch(`https://shfe-diplom.neto-server.ru/seance/${seanceId}`, {
+  await fetch(`${url}/seance/${seanceId}`, {
     method: "DELETE",
   })
     .then((response) => response.json())
@@ -647,7 +648,7 @@ function openCloseSales() {
   if (activeHallIsOpen == 0) {
     const params = new FormData();
     params.set("hallOpen", "1");
-    fetch(`https://shfe-diplom.neto-server.ru/open/${activeHallId}`, {
+    fetch(`${url}/open/${activeHallId}`, {
       method: "POST",
       body: params,
     })
@@ -658,7 +659,7 @@ function openCloseSales() {
   } else {
     const params = new FormData();
     params.set("hallOpen", "0");
-    fetch(`https://shfe-diplom.neto-server.ru/open/${activeHallId}`, {
+    fetch(`${url}/open/${activeHallId}`, {
       method: "POST",
       body: params,
     })
