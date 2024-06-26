@@ -475,6 +475,10 @@
   cursor: pointer;
 }
 
+.session__film span {
+  overflow: hidden;
+}
+
 .session__film__line-and-time {
   position: absolute;
   top: 48px;

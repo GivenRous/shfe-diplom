@@ -544,7 +544,10 @@ export function createAllSeances() {
       const closestDropzone = hallContainer.querySelector(".dropzone");
       let draggableFilm;
 
-      filmInHall.addEventListener("dragstart", () => {
+      filmInHall.addEventListener("dragstart", (event) => {
+        event.target.querySelector(
+          ".session__film__line-and-time"
+        ).style.display = "none";
         closestDropzone.classList.add("visible");
         draggableFilm = filmInHall;
       });
@@ -564,7 +567,10 @@ export function createAllSeances() {
         closestDropzone.classList.remove("visible");
       });
 
-      document.addEventListener("dragend", () => {
+      filmInHall.addEventListener("dragend", (event) => {
+        event.target.querySelector(
+          ".session__film__line-and-time"
+        ).style.display = "";
         closestDropzone.classList.remove("visible");
         draggableFilm = 0;
       });
