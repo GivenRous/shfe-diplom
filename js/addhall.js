@@ -41,4 +41,5 @@ async function fetchAddHall(name) {
     .then((data) => console.log(data));
 
   await getAllHalls();
+  location.reload();
 }

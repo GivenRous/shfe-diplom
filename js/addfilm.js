@@ -58,6 +58,7 @@ async function fetchAddFilm(name, duration, description, origin, poster) {
   });
   let data = await response.json();
   await createAllFilms();
+  location.reload();
   if (!data.success) {
     alert(data.error);
   }

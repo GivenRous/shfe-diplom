@@ -1,27 +1,33 @@
-import { openSessionPopup, getMinutes } from "./addsession.js";
+import { getMinutes, openSessionPopup } from "./addsession.js";
 
 const url = "https://shfe-diplom.neto-server.ru";
 const allHalls = document.querySelector(".all-halls");
 
-export function getAllData() {
-  return fetch(`${url}/alldata`)
-    .then((response) => response.json())
-    .then((data) => {
-      return data;
-    });
+let allData;
+
+export async function getAllData() {
+  if (allData) {
+    return allData;
+  } else {
+    const request = await fetch(`${url}/alldata`)
+      .then((response) => response.json())
+      .then((data) => {
+        allData = data;
+      });
+    return allData;
+  }
 }
 
-export function getAllHalls() {
+export async function getAllHalls() {
   allHalls.innerHTML = "";
-  getAllData().then((data) => {
-    console.log(data);
-    createAllHalls(data);
-    createHallsForSelection(data.result.halls);
-    createHallsForChangePrice(data.result.halls);
-    createAllSession();
-    createHallsForSales(data.result.halls);
-    createAllFilms(data.result.films);
-  });
+  const data = await getAllData();
+  console.log(data);
+  createAllHalls(data);
+  createHallsForSelection(data.result.halls);
+  createHallsForChangePrice(data.result.halls);
+  createAllSession();
+  createHallsForSales(data.result.halls);
+  createAllFilms(data.result.films);
 }
 
 getAllHalls();
@@ -58,6 +64,7 @@ async function deleteHall(el, id) {
       createHallsForSelection(data.result.halls);
     });
   await createAllSession();
+  location.reload();
 }
 
 const allHallsForSelection = document.querySelector(
@@ -66,11 +73,8 @@ const allHallsForSelection = document.querySelector(
 let activeHallId;
 
 async function createHallsForSelection(halls) {
-  const allHalls = halls
-    ? halls
-    : await getAllData().then((data) => {
-        return data.result.halls;
-      });
+  const data = await getAllData();
+  const allHalls = halls || data.result.halls;
   allHallsForSelection.innerHTML = "";
   allHalls.map((el) => {
     const hall = document.createElement("div");
@@ -128,9 +132,8 @@ async function createHallScheme(id, halls) {
   if (halls) {
     activeHall = halls.find((el) => el.id == id);
   } else {
-    activeHall = await getAllData().then((data) => {
-      return data.result.halls.find((el) => el.id == id);
-    });
+    const data = await getAllData();
+    activeHall = data.result.halls.find((el) => el.id == id);
   }
   hallScheme.innerHTML = "";
   const config = activeHall.hall_config;
@@ -353,11 +356,8 @@ const allFilms = document.querySelector(".all-films__container");
 
 export async function createAllFilms(filmsFromFetch) {
   allFilms.innerHTML = "";
-  const films = filmsFromFetch
-    ? filmsFromFetch
-    : await getAllData().then((data) => {
-        return data.result.films;
-      });
+  const data = await getAllData();
+  const films = filmsFromFetch || data.result.films;
   films.map((el) => {
     const film = document.createElement("div");
     film.classList.add("film");
@@ -408,24 +408,23 @@ function deleteFilm(el, id) {
 
 const allSession = document.querySelector(".all-sessions");
 
-function createAllSession() {
+async function createAllSession() {
   allSession.innerHTML = "";
-  getAllData().then((data) => {
-    const allHalls = data.result.halls;
-    allHalls.map((el) => {
-      const session = document.createElement("div");
-      session.classList.add("session");
-      session.innerHTML = `<span class="session__hall-name">${el.hall_name}</span>`;
-      const sessionScheme = document.createElement("div");
-      sessionScheme.classList.add("session__scheme");
-      sessionScheme.id = `session__scheme-${el.id}`;
-      sessionScheme.dataset.id = el.id;
+  const data = await getAllData();
+  const allHalls = data.result.halls;
+  allHalls.map((el) => {
+    const session = document.createElement("div");
+    session.classList.add("session");
+    session.innerHTML = `<span class="session__hall-name">${el.hall_name}</span>`;
+    const sessionScheme = document.createElement("div");
+    sessionScheme.classList.add("session__scheme");
+    sessionScheme.id = `session__scheme-${el.id}`;
+    sessionScheme.dataset.id = el.id;
 
-      session.insertAdjacentElement("beforeend", sessionScheme);
-      allSession.insertAdjacentElement("beforeend", session);
-    });
-    createAllSeances();
+    session.insertAdjacentElement("beforeend", sessionScheme);
+    allSession.insertAdjacentElement("beforeend", session);
   });
+  await createAllSeances();
 }
 
 let draggedFilm = null;
@@ -487,93 +486,85 @@ function checkFilmPosition(filmPosition, schemePosition) {
   const schemeBottom = schemePosition.bottom;
   const schemeLeft = schemePosition.left;
 
-  if (
-    filmTop >= schemeTop &&
-    filmBottom <= schemeBottom &&
-    filmLeft >= schemeLeft
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+  return (
+    filmTop >= schemeTop && filmBottom <= schemeBottom && filmLeft >= schemeLeft
+  );
 }
 
-export function createAllSeances() {
+export async function createAllSeances() {
+  const data = await getAllData();
+
   const allHalls = Array.from(document.querySelectorAll(".session__scheme"));
   const allFilms = Array.from(document.querySelectorAll(".film"));
   const minutInPixel = 100 / 1439;
 
   allHalls.forEach((el) => (el.innerHTML = ""));
 
-  getAllData().then((data) => {
-    const allSeances = data.result.seances;
-    allSeances.map((seance) => {
-      const hall = allHalls.find((el) => el.dataset.id == seance.seance_hallid);
-      const film = allFilms.find((el) => el.dataset.id == seance.seance_filmid);
+  const allSeances = data.result.seances;
+  allSeances.map((seance) => {
+    const hall = allHalls.find((el) => el.dataset.id == seance.seance_hallid);
+    const film = allFilms.find((el) => el.dataset.id == seance.seance_filmid);
 
-      const filmInHall = document.createElement("div");
-      filmInHall.classList.add("session__film");
-      filmInHall.dataset.seanceid = seance.id;
-      filmInHall.setAttribute("draggable", "true");
-      const filmInHallSpan = document.createElement("span");
-      filmInHallSpan.classList.add("session__film-name");
-      filmInHallSpan.textContent = film.dataset.name;
-      filmInHall.innerHTML = `
+    const filmInHall = document.createElement("div");
+    filmInHall.classList.add("session__film");
+    filmInHall.dataset.seanceid = seance.id;
+    filmInHall.setAttribute("draggable", "true");
+    const filmInHallSpan = document.createElement("span");
+    filmInHallSpan.classList.add("session__film-name");
+    filmInHallSpan.textContent = film.dataset.name;
+    filmInHall.innerHTML = `
       <div class="session__film__line-and-time">
           <div class="session__film__line"></div>
           <span class="session__film-time">${seance.seance_time}</span>
       </div>`;
-      filmInHall.insertAdjacentElement("afterbegin", filmInHallSpan);
-      filmInHall.style.left = `${
-        getMinutes(seance.seance_time) * minutInPixel
-      }%`;
-      filmInHall.classList.add(`background-color-${film.dataset.color}`);
-      filmInHall.style.width = `${film.dataset.duration * minutInPixel}%`;
+    filmInHall.insertAdjacentElement("afterbegin", filmInHallSpan);
+    filmInHall.style.left = `${getMinutes(seance.seance_time) * minutInPixel}%`;
+    filmInHall.classList.add(`background-color-${film.dataset.color}`);
+    filmInHall.style.width = `${film.dataset.duration * minutInPixel}%`;
 
-      hall.insertAdjacentElement("beforeend", filmInHall);
+    hall.insertAdjacentElement("beforeend", filmInHall);
 
-      filmInHall.style.top = `-${getTopPosition(hall, filmInHall)}px`;
+    filmInHall.style.top = `-${getTopPosition(hall, filmInHall)}px`;
 
-      const dropzone = document.createElement("div");
-      dropzone.classList.add("dropzone");
-      const hallContainer = filmInHall.closest(".session");
-      if (!hallContainer.querySelector(".dropzone")) {
-        hallContainer.insertAdjacentElement("afterbegin", dropzone);
-      }
+    const dropzone = document.createElement("div");
+    dropzone.classList.add("dropzone");
+    const hallContainer = filmInHall.closest(".session");
+    if (!hallContainer.querySelector(".dropzone")) {
+      hallContainer.insertAdjacentElement("afterbegin", dropzone);
+    }
 
-      const closestDropzone = hallContainer.querySelector(".dropzone");
-      let draggableFilm;
+    const closestDropzone = hallContainer.querySelector(".dropzone");
+    let draggableFilm;
 
-      filmInHall.addEventListener("dragstart", (event) => {
-        event.target.querySelector(
-          ".session__film__line-and-time"
-        ).style.display = "none";
-        closestDropzone.classList.add("visible");
-        draggableFilm = filmInHall;
-      });
+    filmInHall.addEventListener("dragstart", (event) => {
+      event.target.querySelector(
+        ".session__film__line-and-time"
+      ).style.display = "none";
+      closestDropzone.classList.add("visible");
+      draggableFilm = filmInHall;
+    });
 
-      closestDropzone.addEventListener("dragover", (event) => {
-        event.preventDefault();
-      });
+    closestDropzone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+    });
 
-      closestDropzone.addEventListener("drop", (event) => {
-        event.preventDefault();
-        closestDropzone.classList.remove("visible");
-        if (!draggableFilm) return;
-        deleteSeance(draggableFilm.dataset.seanceid);
-      });
+    closestDropzone.addEventListener("drop", (event) => {
+      event.preventDefault();
+      closestDropzone.classList.remove("visible");
+      if (!draggableFilm) return;
+      deleteSeance(draggableFilm.dataset.seanceid);
+    });
 
-      closestDropzone.addEventListener("dragleave", () => {
-        closestDropzone.classList.remove("visible");
-      });
+    closestDropzone.addEventListener("dragleave", () => {
+      closestDropzone.classList.remove("visible");
+    });
 
-      filmInHall.addEventListener("dragend", (event) => {
-        event.target.querySelector(
-          ".session__film__line-and-time"
-        ).style.display = "";
-        closestDropzone.classList.remove("visible");
-        draggableFilm = 0;
-      });
+    filmInHall.addEventListener("dragend", (event) => {
+      event.target.querySelector(
+        ".session__film__line-and-time"
+      ).style.display = "";
+      closestDropzone.classList.remove("visible");
+      draggableFilm = 0;
     });
   });
 }
@@ -591,6 +582,7 @@ async function deleteSeance(seanceId) {
     .then((response) => response.json())
     .then((data) => console.log(data));
   await createAllSeances();
+  location.reload();
 }
 
 const containerHallsForSales = document.querySelector(
@@ -600,8 +592,7 @@ const salesBtn = document.querySelector(".setting__open-sales-btn");
 
 function createHallsForSales(data) {
   containerHallsForSales.innerHTML = "";
-  const allHalls = data;
-  allHalls.map((el) => {
+  data.map((el) => {
     const hall = document.createElement("div");
     hall.textContent = el.hall_name;
     hall.classList.add("sales-configuration__selection");
@@ -619,12 +610,17 @@ function createHallsForSales(data) {
   });
 }
 
-function getSalesBtnText(activeHall) {
-  if (activeHall.dataset.isopen == 1) {
-    salesBtn.textContent = "Закрыть продажу билетов";
-  } else {
-    salesBtn.textContent = "Открыть продажу билетов";
-  }
+async function getSalesBtnText(activeHall) {
+  const data = await getAllData();
+  const hallId = activeHall.dataset.id;
+  const hallHasSeances = data.result.seances.some(
+    (seance) => seance.seance_hallid == hallId
+  );
+  salesBtn.textContent =
+    activeHall.dataset.isopen == 1
+      ? "Закрыть продажу билетов"
+      : "Открыть продажу билетов";
+  salesBtn.disabled = !hallHasSeances;
 }
 
 function changeSelectionHallforSales(id) {
@@ -649,29 +645,17 @@ function openCloseSales() {
     ".sales-configuration__selection-active"
   );
   const activeHallId = activeHall.dataset.id;
-  const activeHallIsOpen = activeHall.dataset.isopen;
+  const isOpen = parseInt(activeHall.dataset.isopen);
+  const params = new FormData();
+  params.set("hallOpen", isOpen ? "0" : "1");
 
-  if (activeHallIsOpen == 0) {
-    const params = new FormData();
-    params.set("hallOpen", "1");
-    fetch(`${url}/open/${activeHallId}`, {
-      method: "POST",
-      body: params,
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-    activeHall.dataset.isopen = 1;
-    getSalesBtnText(activeHall);
-  } else {
-    const params = new FormData();
-    params.set("hallOpen", "0");
-    fetch(`${url}/open/${activeHallId}`, {
-      method: "POST",
-      body: params,
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-    activeHall.dataset.isopen = 0;
-    getSalesBtnText(activeHall);
-  }
+  fetch(`${url}/open/${activeHallId}`, {
+    method: "POST",
+    body: params,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      activeHall.dataset.isopen = isOpen ? 0 : 1;
+      getSalesBtnText(activeHall);
+    });
 }

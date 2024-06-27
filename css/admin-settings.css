@@ -530,6 +530,12 @@
   align-self: center;
 }
 
+.setting__open-sales-btn:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: default;
+}
+
 @media (min-width: 769px) and (max-width: 1000px) {
   .admin-container {
     width: 90%;
