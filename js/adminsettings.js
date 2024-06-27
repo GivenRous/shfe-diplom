@@ -238,6 +238,7 @@ function fetchConfigHall() {
     method: "POST",
     body: params,
   }).then((response) => response.json());
+  location.reload();
 }
 
 function createConfigArray() {
@@ -285,6 +286,7 @@ function changeSelectionHallForPrice(id) {
       !el.classList.contains("hall-configuration-price__selection-active")
     ) {
       el.classList.add("hall-configuration-price__selection-active");
+      btnСancellationPrice.setAttribute('disabled', 'disabled');
     } else if (el.id !== id) {
       el.classList.remove("hall-configuration-price__selection-active");
     }
@@ -296,59 +298,75 @@ const pricePlaceStandart = document.querySelector(".price__standart__input");
 const pricePlaceVip = document.querySelector(".price__vip__input");
 
 function getPlacePrice() {
-  pricePlaceStandart.value = "";
-  pricePlaceVip.value = "";
   const activeHall = document.querySelector(
     ".hall-configuration-price__selection-active"
   );
-  pricePlaceStandart.placeholder = activeHall.dataset.hallPriceStandart;
-  pricePlaceVip.placeholder = activeHall.dataset.hallPriceVip;
+  pricePlaceStandart.value = activeHall.dataset.hallPriceStandart;
+  pricePlaceVip.value = activeHall.dataset.hallPriceVip;
 }
-
-pricePlaceStandart.addEventListener("change", () => {
-  const activeHall = document.querySelector(
-    ".hall-configuration-price__selection-active"
-  );
-  activeHall.dataset.hallPriceStandart = pricePlaceStandart.value;
-});
-
-pricePlaceVip.addEventListener("change", () => {
-  const activeHall = document.querySelector(
-    ".hall-configuration-price__selection-active"
-  );
-  activeHall.dataset.hallPriceVip = pricePlaceVip.value;
-});
 
 const btnСancellationPrice = document.querySelector(
   ".price__configuration__button__cancel"
 );
 
+btnСancellationPrice.setAttribute("disabled", "disabled");
+
+for (const priceInput of [pricePlaceStandart, pricePlaceVip]) {
+  priceInput.addEventListener("input", async () => {
+    const data = await getAllData();
+    const selectedHall = document.querySelector(
+      ".hall-configuration-price__selection-active"
+    );
+    const hallId = selectedHall.dataset.id;
+
+    const oldPrices = {
+      standart: data.result.halls.find((hall) => hall.id == hallId)
+        .hall_price_standart,
+      vip: data.result.halls.find((hall) => hall.id == hallId).hall_price_vip,
+    };
+
+    const standartHasBeenChanged =
+      pricePlaceStandart.value != oldPrices.standart;
+    const vipHasBeenChanged = pricePlaceVip.value != oldPrices.vip;
+
+    if (standartHasBeenChanged || vipHasBeenChanged) {
+      btnСancellationPrice.removeAttribute("disabled");
+    } else {
+      btnСancellationPrice.setAttribute("disabled", "disabled");
+    }
+  });
+}
+
 btnСancellationPrice.addEventListener("click", () => {
-  location.reload();
+  const activeHall = document.querySelector(
+    ".hall-configuration-price__selection-active"
+  );
+  pricePlaceStandart.value = activeHall.dataset.hallPriceStandart;
+  pricePlaceVip.value = activeHall.dataset.hallPriceVip;
 });
 
 const btnSavePrices = document.querySelector(
   ".price__configuration__button__save"
 );
 
-btnSavePrices.addEventListener("click", () => {
-  const allHalls = Array.from(
-    document.querySelectorAll(".hall-configuration-price__selection")
+btnSavePrices.addEventListener("click", async () => {
+  const selectedHall = document.querySelector(
+    ".hall-configuration-price__selection-active"
   );
-  allHalls.map((el) => {
-    const standart = el.dataset.hallPriceStandart || pricePlaceStandart.value;
-    const vip = el.dataset.hallPriceVip || pricePlaceVip.value;
+  const hallId = selectedHall.dataset.id;
+  const standart = pricePlaceStandart.value;
+  const vip = pricePlaceVip.value;
 
-    const params = new FormData();
-    params.set("priceStandart", standart);
-    params.set("priceVip", vip);
-    fetch(`${url}/price/${el.dataset.id}`, {
-      method: "POST",
-      body: params,
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  });
+  const params = new FormData();
+  params.set("priceStandart", standart);
+  params.set("priceVip", vip);
+  await fetch(`${url}/price/${hallId}`, {
+    method: "POST",
+    body: params,
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data));
+  location.reload();
 });
 
 const colors = ["yellow", "green", "lightgreen", "lightblue", "darkblue"];
