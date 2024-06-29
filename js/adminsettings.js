@@ -92,7 +92,7 @@ async function createHallsForSelection(halls) {
     );
     activeHallId = allHallsForSelection.firstChild.id;
 
-    getHallSize(allHalls[0]);
+    setHallSize(allHalls[0]);
     createHallScheme(allHallsForSelection.firstChild.dataset.id, allHalls);
   });
 }
@@ -117,12 +117,12 @@ function changeSelectionHall(id, hall) {
       el.classList.remove("hall-configuration__selection-active");
     }
   });
-  getHallSize(hall);
+  setHallSize(hall);
 }
 
-function getHallSize(hall) {
-  numberRowsInput.placeholder = hall.hall_rows;
-  numberSeatsInput.placeholder = hall.hall_places;
+function setHallSize(hall) {
+  numberRowsInput.value = hall.hall_rows;
+  numberSeatsInput.value = hall.hall_places;
 }
 
 let hallScheme = document.querySelector(".hall-scheme__hall");
@@ -146,14 +146,23 @@ async function createHallScheme(id, halls) {
       placeDiv.dataset.type = `${config[i][j]}`;
       placeDiv.dataset.row = i + 1;
       placeDiv.dataset.place = j + 1;
-      placeDiv.addEventListener("click", () => changeTypePlace(placeDiv));
+
+      placeDiv.addEventListener("click", (event) => {
+        event.stopPropagation();
+        changeTypePlace(placeDiv);
+        enableHallConfigurationCancel();
+      });
       rowDiv.appendChild(placeDiv);
     }
     hallScheme.appendChild(rowDiv);
   }
 }
 
-numberRowsInput.addEventListener("change", () => {
+function enableHallConfigurationCancel() {
+  hallConfigurationCancel.removeAttribute("disabled");
+}
+
+numberRowsInput.addEventListener("input", () => {
   const activeHall = document.querySelector(
     ".hall-configuration__selection-active"
   );
@@ -164,7 +173,7 @@ numberRowsInput.addEventListener("change", () => {
   );
 });
 
-numberSeatsInput.addEventListener("change", () => {
+numberSeatsInput.addEventListener("input", () => {
   const activeHall = document.querySelector(
     ".hall-configuration__selection-active"
   );
@@ -209,16 +218,57 @@ const hallConfigurationCancel = document.querySelector(
   ".hall-configuration__button__cancel"
 );
 hallConfigurationCancel.addEventListener("click", () => {
-  createHallsForSelection();
-  numberRowsInput.value = "";
-  numberSeatsInput.value = "";
+  cancelHallConfiguration();
 });
+
+hallConfigurationCancel.setAttribute("disabled", "disabled");
 
 const btnSaveConfigHall = document.querySelector(
   ".hall-configuration__button__save"
 );
+btnSaveConfigHall.addEventListener("click", () => {
+  fetchConfigHall();
+});
 
-btnSaveConfigHall.addEventListener("click", () => fetchConfigHall());
+async function cancelHallConfiguration() {
+  const allData = await getAllData();
+  const activeHall = document.querySelector(
+    ".hall-configuration__selection-active"
+  );
+  const hallId = activeHall.dataset.id;
+
+  const hallData = allData.result.halls.find((hall) => hall.id == hallId);
+
+  numberRowsInput.value = hallData.hall_rows;
+  numberSeatsInput.value = hallData.hall_places;
+
+  createHallScheme(hallId);
+  hallConfigurationCancel.setAttribute("disabled", "disabled");
+}
+
+for (const input of [numberRowsInput, numberSeatsInput]) {
+  input.addEventListener("input", () => {
+    const activeHall = document.querySelector(
+      ".hall-configuration__selection-active"
+    );
+    const hallId = activeHall.dataset.id;
+    const allData = getAllData();
+    allData.then((data) => {
+      const hall = data.result.halls.find((hall) => hall.id == hallId);
+      const oldRows = hall.hall_rows;
+      const oldPlaces = hall.hall_places;
+
+      if (
+        numberRowsInput.value !== oldRows.toString() ||
+        numberSeatsInput.value !== oldPlaces.toString()
+      ) {
+        hallConfigurationCancel.removeAttribute("disabled");
+      } else {
+        hallConfigurationCancel.setAttribute("disabled", "disabled");
+      }
+    });
+  });
+}
 
 function fetchConfigHall() {
   const activeHall = document.querySelector(
@@ -286,7 +336,7 @@ function changeSelectionHallForPrice(id) {
       !el.classList.contains("hall-configuration-price__selection-active")
     ) {
       el.classList.add("hall-configuration-price__selection-active");
-      btnСancellationPrice.setAttribute('disabled', 'disabled');
+      btnСancellationPrice.setAttribute("disabled", "disabled");
     } else if (el.id !== id) {
       el.classList.remove("hall-configuration-price__selection-active");
     }
