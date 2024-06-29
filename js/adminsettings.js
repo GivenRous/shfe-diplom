@@ -270,7 +270,7 @@ for (const input of [numberRowsInput, numberSeatsInput]) {
   });
 }
 
-function fetchConfigHall() {
+async function fetchConfigHall() {
   const activeHall = document.querySelector(
     ".hall-configuration__selection-active"
   );
@@ -278,17 +278,28 @@ function fetchConfigHall() {
   const rowCount = activeHall.dataset.rows;
   const placeCount = activeHall.dataset.places;
   const config = createConfigArray();
-  console.log(hallId, rowCount, placeCount, config);
 
   const params = new FormData();
   params.set("rowCount", rowCount);
   params.set("placeCount", placeCount);
   params.set("config", JSON.stringify(config));
-  fetch(`${url}/hall/${hallId}`, {
-    method: "POST",
-    body: params,
-  }).then((response) => response.json());
-  location.reload();
+
+  try {
+    const response = await fetch(`${url}/hall/${hallId}`, {
+      method: "POST",
+      body: params,
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to save configuration");
+    }
+
+    const data = await response.json();
+    console.log("Configuration saved:", data);
+    location.reload();
+  } catch (error) {
+    console.error("Error saving configuration:", error);
+  }
 }
 
 function createConfigArray() {
